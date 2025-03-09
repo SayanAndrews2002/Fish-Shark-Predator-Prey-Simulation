@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from matplotlib.widgets import Button
 import keyboard  # For hotkey functionality
+import time
 
 # Define constants
 FISH = 1
@@ -157,12 +158,16 @@ class WaTor:
         plt.show()
 
     def handle_keypress(self, event):
-        """Handle key presses to control simulation."""
         if event.key == " ":
             self.step()
-        elif event.key in "1234567890":
+        elif event.key in "123456789":
             self.speed = int(event.key)
-            print(f"Speed set to {self.speed}")
+            self.speed = (1 << (self.speed - 1))
+            loops = 10 * self.speed
+            sleep = 1.0 / self.speed
+            for i in range(loops):
+                self.step()
+                time.sleep(sleep)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
